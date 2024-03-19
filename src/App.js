@@ -37,18 +37,28 @@ export default function App() {
         const controller = new AbortController();
 
         async function fetchMovies() {
+            function checkData(res) {
+                if (!res.ok) {
+                    throw new Error("Something went wrong with fetching movies!")
+                }
+            }
+
+            function checkResponse(data) {
+                if (data.Response === "False") throw new Error("Movie not found!");
+            }
+
             try {
                 setIsLoading(true);
                 setError("");
 
                 const res = await fetch(`https://www.omdbapi.com/?apikey=${KEY}&s=${query}`, {signal: controller.signal});
 
-                if (!res.ok) {
-                    throw new Error("Something went wrong with fetching movies!")
-                }
+                checkData(res)
 
                 const data = await res.json();
-                if (data.Response === "False") throw new Error("Movie not found!");
+
+                checkResponse(data)
+
                 setMovies(data.Search);
                 setError("");
             } catch (e) {
