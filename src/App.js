@@ -53,11 +53,11 @@ export default function App() {
 
                 const res = await fetch(`https://www.omdbapi.com/?apikey=${KEY}&s=${query}`, {signal: controller.signal});
 
-                checkData(res)
+                checkData(res);
 
                 const data = await res.json();
 
-                checkResponse(data)
+                checkResponse(data);
 
                 setMovies(data.Search);
                 setError("");
